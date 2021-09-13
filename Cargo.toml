@@ -1,0 +1,12 @@
+[package]
+name = "speedtest-to-influx-db"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+influxdb = { version = "0.4.0", features = ["derive"] }
+speedtest-rs = { version = "0.1.2" }
+chrono = "0.4"
+async-std = { version = "1.10.0", features = ["attributes"] }
