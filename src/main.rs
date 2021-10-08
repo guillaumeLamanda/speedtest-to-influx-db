@@ -1,10 +1,10 @@
 use chrono::{DateTime, Utc};
+use clap::Clap;
 use influxdb::{Client, InfluxDbWriteable};
 use speedtest_rs::speedtest::{
     get_best_server_based_on_latency, get_configuration, get_server_list_with_config,
     test_download_with_progress_and_config, test_upload_with_progress_and_config,
 };
-use std::env::args;
 use std::io::Write;
 
 fn print_dot() {
@@ -12,17 +12,16 @@ fn print_dot() {
     std::io::stdout().flush().unwrap();
 }
 
-fn get_influx_db_url_from_env() -> String {
-    std::env::var("INFLUX_DB_URL").expect(
-        "no influxdb url specified. Use first argument or INFLUX_DB_URL environment variable.",
-    )
+#[derive(Clap)]
+#[clap(version = "0.1", author = "Guillaume L.")]
+struct Opts {
+    influx_db_addr: String,
 }
 
 #[async_std::main]
 async fn main() {
-    let client_addr = args().nth(1).unwrap_or_else(get_influx_db_url_from_env);
-
-    let client = Client::new(client_addr, "speedtests");
+    let opts: Opts = Opts::parse();
+    let client = Client::new(opts.influx_db_addr, "speedtests");
     match client.ping().await {
         Err(err) => {
             println!("Error pinging influxdb {}", err);

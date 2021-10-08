@@ -10,3 +10,4 @@ influxdb = { version = "0.4.0", features = ["derive"] }
 speedtest-rs = { version = "0.1.2" }
 chrono = "0.4"
 async-std = { version = "1.10.0", features = ["attributes"] }
+clap = "3.0.0-beta.4"
